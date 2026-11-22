@@ -1,0 +1,17 @@
+@startuml
+
+class User {
+  -id: int
+  -name: String
+  +login(): boolean
+}
+
+class Habit {
+  -id: int
+  -title: String
+  +complete(): void
+}
+
+User "1" --> "0..*" Habit : creates
+
+@enduml

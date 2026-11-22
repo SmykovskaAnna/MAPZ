@@ -1,0 +1,97 @@
+@startuml
+left to right direction
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam packageStyle rectangle
+
+skinparam actor {
+  BackgroundColor #EAF2FF
+  BorderColor #4776B8
+  FontColor #23395B
+}
+
+skinparam usecase {
+  BackgroundColor #EDF5FF
+  BorderColor #5286C5
+  FontColor #23395B
+  ArrowColor #52677F
+}
+
+skinparam rectangle {
+  BackgroundColor #FAFCFF
+  BorderColor #4776B8
+  FontColor #23395B
+}
+
+skinparam package {
+  BackgroundColor #F4F7FC
+  BorderColor #A7BBD5
+  FontColor #345477
+}
+
+skinparam ArrowColor #65758B
+skinparam ArrowThickness 1.2
+
+actor "Користувач" as User
+actor "Гість" as Guest
+actor "Зареєстрований\nкористувач" as RegisteredUser
+actor "Сервіс\nсповіщень" as NotificationService
+
+Guest -|> User
+RegisteredUser -|> User
+
+rectangle "HabitTracker" {
+
+  package "Обліковий запис" {
+    usecase "Реєстрація" as UC1
+    usecase "Вхід у систему" as UC2
+    usecase "Керування профілем" as UC3
+  }
+
+  package "Керування звичками" {
+    usecase "Перегляд списку\nзвичок" as UC4
+    usecase "Створення звички" as UC5
+    usecase "Редагування звички" as UC6
+    usecase "Видалення звички" as UC7
+    usecase "Позначення звички\nвиконаною" as UC8
+    usecase "Додавання нотатки" as UC9
+    usecase "Перевірка даних" as UC10
+  }
+
+  package "Аналітика" {
+    usecase "Перегляд статистики" as UC11
+    usecase "Перегляд історії\nвиконання" as UC12
+    usecase "Оновлення прогресу" as UC13
+  }
+
+  package "Нагадування" {
+    usecase "Налаштування\nнагадувань" as UC14
+    usecase "Надсилання\nнагадування" as UC15
+  }
+}
+
+Guest --> UC1
+Guest --> UC2
+
+RegisteredUser --> UC2
+RegisteredUser --> UC3
+RegisteredUser --> UC4
+RegisteredUser --> UC5
+RegisteredUser --> UC6
+RegisteredUser --> UC7
+RegisteredUser --> UC8
+RegisteredUser --> UC11
+RegisteredUser --> UC12
+RegisteredUser --> UC14
+
+NotificationService --> UC15
+
+UC5 ..> UC10 : <<include>>
+UC6 ..> UC10 : <<include>>
+UC8 ..> UC13 : <<include>>
+
+UC9 ..> UC8 : <<extend>>
+
+@enduml
