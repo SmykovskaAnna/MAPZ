@@ -1,0 +1,43 @@
+@startuml
+title Діаграма об'єктів HabitTracker
+skinparam objectAttributeIconSize 0
+skinparam linetype ortho
+
+object "anna : ЗареєстрованийКористувач" as anna {
+  ідентифікатор = 1
+  ім'я = "Анна"
+  електроннаПошта = "anna@example.com"
+  датаРеєстрації = "2026-09-01"
+  активний = true
+  часовийПояс = "Europe/Warsaw"
+}
+object "health : Категорія" as health {
+  ідентифікатор = 1
+  назва = "Здоров'я"
+  опис = "Фізичне та ментальне здоров'я"
+}
+object "morningExercise : Звичка" as habit {
+  ідентифікатор = 101
+  назва = "Ранкова зарядка"
+  опис = "15 хвилин фізичних вправ"
+  періодичність = "Щодня"
+  статус = "Активна"
+}
+object "completion22Nov : ЗаписВиконання" as record {
+  ідентифікатор = 1001
+  дата = "2026-11-22"
+  виконано = true
+  коментар = "Виконано о 08:10"
+}
+object "morningReminder : Нагадування" as reminder {
+  ідентифікатор = 201
+  час = "08:00"
+  активне = true
+  дніТижня = "Пн-Нд"
+}
+
+anna -- habit : створює
+health -- habit : категорія
+habit -- record : запис виконання
+habit -- reminder : має
+@enduml

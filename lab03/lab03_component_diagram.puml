@@ -1,0 +1,27 @@
+@startuml
+title Діаграма компонентів HabitTracker
+skinparam componentStyle uml2
+left to right direction
+
+component "Керування користувачами" as User
+component "Керування звичками" as Habit
+component "Керування категоріями" as Category
+component "Відстеження прогресу" as Progress
+component "Сервіс нагадувань" as Reminder
+component "Аналітика" as Analytics
+component "Зовнішній сервіс сповіщень" as Notification
+
+User -0)- Habit : IUserService
+Category -0)- Habit : ICategoryService
+Habit -0)- Progress : IHabitService
+Habit -0)- Reminder : IHabitService
+User -0)- Reminder : IUserService
+Progress -0)- Analytics : IProgressService
+User -0)- Analytics : IUserService
+Notification -0)- Reminder : INotificationAPI
+
+interface "IReminderService" as IReminder
+interface "IAnalyticsService" as IAnalytics
+Reminder - IReminder
+Analytics - IAnalytics
+@enduml

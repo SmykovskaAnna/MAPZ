@@ -1,0 +1,25 @@
+@startuml
+title Діаграма розгортання HabitTracker
+
+node "Пристрій клієнта" as Client {
+  artifact "Веббраузер" as Browser
+}
+node "Вебсервер" as Web {
+  artifact "Nginx" as Nginx
+  artifact "Bootstrap CSS / JavaScript" as Bootstrap
+}
+node "Сервер застосунків" as App {
+  artifact "habittracker.jar\n(Java, Spring Boot, Thymeleaf)" as Application
+}
+node "Сервер бази даних" as DB {
+  database "habittracker_db\n(MySQL)" as Database
+}
+node "Зовнішній сервіс сповіщень" as Notification {
+  artifact "Notification API" as NotificationAPI
+}
+
+Client -- Web : HTTPS
+Web -- App : HTTP (reverse proxy)
+App -- DB : MySQL / TCP 3306
+App -- Notification : HTTPS / REST API
+@enduml
