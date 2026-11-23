@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="2350" viewBox="0 0 1400 2350" role="img" aria-labelledby="title desc">
+<title id="title">Діаграма діяльності: створення звички в HabitTracker</title>
+<desc id="desc">UML activity diagram with swimlanes for registered user, HabitTracker, and notification service. Shows data validation loop, optional reminder fork and join, and active habit object state.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#41566f"/></marker></defs>
+<style>
+text{font-family:Arial,sans-serif;fill:#23354a}.title{font-size:26px;font-weight:bold}.lane{font-size:17px;font-weight:bold}.act{fill:#f7faff;stroke:#426b9a;stroke-width:2}.decision{fill:#fff3cd;stroke:#a87b16;stroke-width:2}.flow{fill:none;stroke:#41566f;stroke-width:2;marker-end:url(#arrow)}.flowplain{fill:none;stroke:#41566f;stroke-width:2}.lab{font-size:14px}.small{font-size:13px}.node{font-size:16px;text-anchor:middle;dominant-baseline:middle}.laneBg1{fill:#f4f8ff}.laneBg2{fill:#fbfcfe}.laneBg3{fill:#f4fbf8}.object{fill:#e2f2df;stroke:#438343;stroke-width:2}.bar{stroke:#2f4358;stroke-width:7;stroke-linecap:round}.note{font-size:14px;fill:#35623b}
+</style>
+<rect x="0" y="0" width="1400" height="2350" fill="white"/>
+<text class="title" x="700" y="38" text-anchor="middle">Створення звички в HabitTracker (UC5)</text>
+<rect class="laneBg1" x="20" y="65" width="400" height="2260"/><rect class="laneBg2" x="420" y="65" width="520" height="2260"/><rect class="laneBg3" x="940" y="65" width="440" height="2260"/>
+<path d="M420 65V2325 M940 65V2325" stroke="#a9b8c8" stroke-width="2"/>
+<text class="lane" x="220" y="94" text-anchor="middle">Зареєстрований користувач</text><text class="lane" x="680" y="94" text-anchor="middle">HabitTracker</text><text class="lane" x="1160" y="94" text-anchor="middle">Сервіс сповіщень</text>
+
+<circle cx="220" cy="130" r="13" fill="#2e8b57"/>
+<path class="flow" d="M220 143 V158"/>
+<rect class="act" x="85.0" y="161.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="190">
+<tspan x="220" dy="0">Відкрити розділ звичок</tspan>
+</text>
+<path class="flow" d="M220 219 V238"/>
+<rect class="act" x="85.0" y="241.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="270">
+<tspan x="220" dy="0">Обрати створення звички</tspan>
+</text>
+<path class="flow" d="M355 270 H500 V340 H545"/>
+<rect class="act" x="545.0" y="311.0" width="270" height="58" rx="14"/>
+<text class="node" x="680" y="340">
+<tspan x="680" dy="0">Показати форму створення</tspan>
+</text>
+<path class="flow" d="M545 340 H220 V400"/>
+<rect class="act" x="85.0" y="401.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="430">
+<tspan x="220" dy="0">Ввести назву й опис</tspan>
+</text>
+<path class="flow" d="M220 459 V478"/>
+<rect class="act" x="85.0" y="481.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="510">
+<tspan x="220" dy="0">Задати періодичність</tspan>
+</text>
+<path class="flow" d="M220 539 V558"/>
+<rect class="act" x="85.0" y="561.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="580">
+<tspan x="220" dy="0">Налаштувати нагадування</tspan>
+<tspan x="220" dy="20">(за потреби)</tspan>
+</text>
+<path class="flow" d="M220 619 V638"/>
+<rect class="act" x="85.0" y="641.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="670">
+<tspan x="220" dy="0">Підтвердити створення</tspan>
+</text>
+<path class="flow" d="M355 670 H480 V740 H545"/>
+<rect class="act" x="545.0" y="721.0" width="270" height="58" rx="14"/>
+<text class="node" x="680" y="750">
+<tspan x="680" dy="0">Перевірити введені дані</tspan>
+</text>
+<path class="flow" d="M680 779 V795"/>
+<polygon class="decision" points="680,795.0 765.0,840 680,885.0 595.0,840"/>
+<text class="small" x="680" y="831" text-anchor="middle" dominant-baseline="middle">
+<tspan x="680" dy="0">Дані</tspan>
+<tspan x="680" dy="18">некоректні?</tspan>
+</text>
+<path class="flow" d="M765 840 H860 V1260 H815"/>
+<text class="lab" x="805" y="825" text-anchor="middle">ні</text>
+<path class="flow" d="M680 885 V918"/>
+<text class="lab" x="705" y="905" text-anchor="middle">так</text>
+<rect class="act" x="545.0" y="921.0" width="270" height="58" rx="14"/>
+<text class="node" x="680" y="940">
+<tspan x="680" dy="0">Показати повідомлення</tspan>
+<tspan x="680" dy="20">про помилку</tspan>
+</text>
+<path class="flow" d="M545 950 H355 V1010"/>
+<rect class="act" x="85.0" y="1011.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="1040">
+<tspan x="220" dy="0">Виправити введені дані</tspan>
+</text>
+<path class="flow" d="M355 1040 H545 V1120"/>
+<rect class="act" x="545.0" y="1121.0" width="270" height="58" rx="14"/>
+<text class="node" x="680" y="1150">
+<tspan x="680" dy="0">Повторно перевірити дані</tspan>
+</text>
+<path class="flow" d="M815 1150 H910 V840 H765"/>
+<text class="lab" x="1010" y="1010" text-anchor="middle">повторити перевірку</text>
+<path class="flow" d="M680 1260 V1290"/>
+<rect class="act" x="545.0" y="1291.0" width="270" height="58" rx="14"/>
+<text class="node" x="680" y="1320">
+<tspan x="680" dy="0">Зберегти звичку</tspan>
+</text>
+<rect class="object" x="790" y="1287" width="250" height="70" rx="3"/><text class="note" x="915" y="1315" text-anchor="middle"><tspan x="915">Об’єкт: Звичка</tspan><tspan x="915" dy="20">[активна]</tspan></text>
+<path class="flow" d="M680 1349 V1385"/>
+<polygon class="decision" points="680,1385.0 765.0,1430 680,1475.0 595.0,1430"/>
+<text class="small" x="680" y="1421" text-anchor="middle" dominant-baseline="middle">
+<tspan x="680" dy="0">Нагадування</tspan>
+<tspan x="680" dy="18">налаштовано?</tspan>
+</text>
+<path class="flow" d="M680 1475 V1510"/>
+<text class="lab" x="710" y="1498" text-anchor="middle">так</text>
+<path class="bar" d="M535 1520 H825"/>
+<path class="flow" d="M590 1520 V1550"/>
+<rect class="act" x="470.0" y="1551.0" width="240" height="58" rx="14"/>
+<text class="node" x="590" y="1580">
+<tspan x="590" dy="0">Оновити список звичок</tspan>
+</text>
+<path class="flow" d="M590 1609 V1960 H570 V1980"/>
+<path class="flow" d="M770 1520 V1550"/>
+<rect class="act" x="640.0" y="1551.0" width="260" height="58" rx="14"/>
+<text class="node" x="770" y="1570">
+<tspan x="770" dy="0">Надіслати запит на</tspan>
+<tspan x="770" dy="20">нагадування  ></tspan>
+</text>
+<path class="flow" d="M900 1580 H1020 V1650 H1025"/>
+<rect class="act" x="1030.0" y="1651.0" width="260" height="58" rx="14"/>
+<text class="node" x="1160" y="1670">
+<tspan x="1160" dy="0">Отримати запит на</tspan>
+<tspan x="1160" dy="20">нагадування  &lt;</tspan>
+</text>
+<path class="flow" d="M1160 1709 V1738"/>
+<rect class="act" x="1025.0" y="1739.0" width="270" height="58" rx="14"/>
+<text class="node" x="1160" y="1768">
+<tspan x="1160" dy="0">Зареєструвати розклад</tspan>
+</text>
+<path class="flow" d="M1160 1797 V1825"/>
+<rect class="act" x="1025.0" y="1826.0" width="270" height="58" rx="14"/>
+<text class="node" x="1160" y="1855">
+<tspan x="1160" dy="0">Надіслати підтвердження  ></tspan>
+</text>
+<path class="flow" d="M1030 1855 H900 V1910 H900"/>
+<rect class="act" x="635.0" y="1911.0" width="270" height="58" rx="14"/>
+<text class="node" x="770" y="1940">
+<tspan x="770" dy="0">Отримати підтвердження  &lt;</tspan>
+</text>
+<path class="flow" d="M770 1969 V1980 H790"/>
+<path class="bar" d="M550 1980 H810"/>
+<path class="flow" d="M765 1430 H900 V1850 H810"/>
+<text class="lab" x="815" y="1415" text-anchor="middle">ні</text>
+<rect class="act" x="550.0" y="1821.0" width="260" height="58" rx="14"/>
+<text class="node" x="680" y="1840">
+<tspan x="680" dy="0">Оновити список без</tspan>
+<tspan x="680" dy="20">нагадування</tspan>
+</text>
+<path class="flow" d="M680 1879 V2075 H605"/>
+<path class="flow" d="M680 1984 V2035"/>
+<polygon class="decision" points="680,2035.0 755.0,2075 680,2115.0 605.0,2075"/>
+<text class="small" x="680" y="2066" text-anchor="middle" dominant-baseline="middle">
+<tspan x="680" dy="0">Потоки</tspan>
+<tspan x="680" dy="18">об’єднано</tspan>
+</text>
+<path class="flow" d="M680 2115 V2140"/>
+<rect class="act" x="545.0" y="2141.0" width="270" height="58" rx="14"/>
+<text class="node" x="680" y="2160">
+<tspan x="680" dy="0">Показати результат</tspan>
+<tspan x="680" dy="20">створення</tspan>
+</text>
+<path class="flow" d="M545 2170 H220 V2220"/>
+<rect class="act" x="85.0" y="2221.0" width="270" height="58" rx="14"/>
+<text class="node" x="220" y="2250">
+<tspan x="220" dy="0">Переглянути створену звичку</tspan>
+</text>
+<path class="flow" d="M220 2279 V2294"/>
+<circle cx="220" cy="2310" r="15" fill="white" stroke="#b94040" stroke-width="4"/><circle cx="220" cy="2310" r="9" fill="#b94040"/>
+</svg>
