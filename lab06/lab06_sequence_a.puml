@@ -1,0 +1,67 @@
+@startuml
+title Сценарій А: створення звички
+actor "Зареєстрований користувач" as User
+hide footbox
+participant "Вебінтерфейс" as UI
+participant "СервісЗвичок" as Service
+participant "ЗареєстрованийКористувач" as Account
+participant "ЧернеткаЗвички" as Draft
+participant "Звичка" as Habit
+participant "Нагадування" as Reminder
+participant "Планувальник" as Scheduler
+
+User -> UI : податиДані(назва, опис, періодичність)
+activate UI
+loop Повторити, якщо дані невалідні
+  create Draft
+  UI -> Draft : <<create>>(дані форми)
+  activate Draft
+  UI -> Service : створитиЗвичку(чернетка)
+  activate Service
+  Service -> Service : перевіритиДані(чернетка)
+  alt Дані некоректні
+    Service --> UI : помилки(перелік)
+    deactivate Service
+    destroy Draft
+    UI --> User : показатиПомилки(перелік)
+    User -> UI : виправитиДані(...)
+  else Дані коректні
+    Service -> Account : створитиЗвичку()
+    activate Account
+    create Habit
+    Account -> Habit : <<create>>
+    activate Habit
+    Habit -> Habit : створити()
+    Habit --> Account : створено
+    deactivate Habit
+    Account --> Service : звичка
+    deactivate Account
+    destroy Draft
+
+    opt Користувач налаштував нагадування
+      create Reminder
+      Habit -> Reminder : <<create>>
+      activate Reminder
+      Reminder -> Reminder : налаштувати()
+      Reminder --> Habit : налаштовано
+      deactivate Reminder
+    end
+
+    par Оновити список звичок
+      Service -> UI : оновитиСписокЗвичок()
+      UI --> Service : списокОновлено
+    else Передати нагадування планувальнику
+      opt Нагадування створено
+        ref over Reminder, Scheduler : Надіслати нагадування
+      end
+    end
+
+    Service --> UI : звичку створено
+    deactivate Service
+    break Створення завершено
+    end
+  end
+end
+UI --> User : показатиРезультат()
+deactivate UI
+@enduml

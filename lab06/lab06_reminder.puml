@@ -1,0 +1,22 @@
+@startuml
+title Підвзаємодія: надсилання нагадування
+hide footbox
+participant "Планувальник\n(зовнішній учасник)" as Scheduler
+participant "Нагадування" as Reminder
+participant "Сервіс сповіщень\n(зовнішній)" as Notifications
+
+activate Scheduler
+Scheduler -> Reminder : надіслати()
+activate Reminder
+Reminder ->> Notifications : доставитиНагадування(одержувач, текст)
+activate Notifications
+alt Сервіс доступний
+  Notifications ->> Reminder : доставкуПідтверджено()
+else Помилка доставки
+  Notifications ->> Reminder : помилкаДоставки(причина)
+end
+deactivate Notifications
+Reminder --> Scheduler : результатНадсилання
+deactivate Reminder
+deactivate Scheduler
+@enduml

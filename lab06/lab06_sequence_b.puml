@@ -1,0 +1,42 @@
+@startuml
+title Сценарій Б: позначення звички виконаною
+actor "Зареєстрований користувач" as User
+hide footbox
+participant "Вебінтерфейс" as UI
+participant "СервісЗвичок" as Service
+participant "Звичка" as Habit
+participant "ЗаписВиконання" as Record
+
+User -> UI : позначитиВиконаною(звичкаId)
+activate UI
+UI -> Service : записатиВиконання(звичкаId)
+activate Service
+Service -> Habit : отриматиСтатус()
+activate Habit
+Habit --> Service : статус
+deactivate Habit
+
+alt Статус активний, період очікує виконання
+  create Record
+  Service -> Record : <<create>>(дата, коментар)
+  activate Record
+  Record -> Record : позначитиВиконаною()
+  Record --> Service : запис збережено
+  deactivate Record
+
+  Service -> Habit : оновити() [є запис]
+  activate Habit
+  Habit -> Habit : отриматиПрогрес()
+  Habit --> Habit : прогрес
+  Habit --> Service : оновлено(прогрес)
+  deactivate Habit
+  Service --> UI : результат(прогрес)
+  UI --> User : показатиПідтвердження()
+else Звичка призупинена, архівована або період уже виконано
+  Service --> UI : відмова(причина)
+  UI --> User : показатиПовідомлення(причина)
+end
+
+deactivate Service
+deactivate UI
+@enduml
