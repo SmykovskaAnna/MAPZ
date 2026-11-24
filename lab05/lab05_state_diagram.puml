@@ -1,0 +1,29 @@
+@startuml
+left to right direction
+title Життєвий цикл звички в HabitTracker
+[*] --> S_Lifecycle
+state "Життєвий цикл звички" as S_Lifecycle {
+  [*] --> S_Draft
+  state "Чернетка" as S_Draft
+  state "Призупинена" as S_Paused
+  state "Архівована" as S_Archived
+
+  state "Активна" as S_ActiveHabit {
+    S_ActiveHabit : entry / позначити активною
+    [*] --> S_Waiting
+    state "Очікує виконання" as S_Waiting
+    S_Waiting : отриматиПрогрес() / показати прогрес
+    state "Період виконано" as S_PeriodDone
+    S_Waiting --> S_PeriodDone : оновити() [є запис]
+    S_PeriodDone --> S_Waiting : оновити() [почався період]
+    state H <<history>>
+  }
+
+  S_Draft --> S_ActiveHabit : створити() [назва є]
+  S_ActiveHabit --> S_Paused : оновити() [пауза]
+  S_Paused --> H : оновити() [відновити]
+  S_ActiveHabit --> S_Archived : оновити() [архів]
+  S_Archived --> S_ActiveHabit : оновити() [відновити]
+}
+S_Lifecycle --> [*] : видалити()
+@enduml
