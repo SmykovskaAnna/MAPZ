@@ -1,0 +1,115 @@
+-- Лабораторна робота №7. Z-специфікація HabitTracker
+-- Класи фрагмента: Habit (Звичка), Completion (ЗаписВиконання)
+
+values
+  МАКС_ЗАПИСІВ_ЗА_ПЕРІОД : nat = 1
+
+types
+  HabitId = token;
+  RecordId = token;
+  PeriodId = token;
+  RecordKey = HabitId * PeriodId;
+  Progress = nat
+  inv p == p <= 100
+
+  HabitState = <Чернетка> | <Очікує> | <Виконано> | <Пауза> | <Архів>;
+
+state HabitTracker of
+  status  : map HabitId to HabitState
+  period  : map HabitId to PeriodId
+  records : inmap RecordKey to RecordId
+  pausedFrom : map HabitId to HabitState
+inv mk_HabitTracker(st, pe, rec, old) ==
+     dom st = dom pe
+  and (forall k in set dom rec & k.#1 in set dom st)
+  and (forall k in set dom rec &
+       card {x | x in set dom rec & x.#1 = k.#1 and x.#2 = k.#2}
+         <= МАКС_ЗАПИСІВ_ЗА_ПЕРІОД)
+  and (forall h in set dom st &
+       (st(h) = <Виконано> => mk_(h, pe(h)) in set dom rec))
+  and (forall h in set dom st & (st(h) = <Пауза> <=> h in set dom old))
+  and dom old subset dom st
+  and (forall h in set dom old &
+       (old(h) = <Очікує> or old(h) = <Виконано>))
+init s == s = mk_HabitTracker({|->}, {|->}, {|->}, {|->})
+end
+
+functions
+  -- Явна функція: прогрес поточного періоду.
+  прогрес : HabitId * map HabitId to HabitState -> Progress
+  прогрес(h, st) == if st(h) = <Виконано> then 100 else 0
+  pre h in set dom st;
+
+  -- Неявна функція: умова та очікуваний результат.
+  виконана(h : HabitId, st : map HabitId to HabitState) result : bool
+  pre h in set dom st
+  post result = (st(h) = <Виконано>);
+
+operations
+  Створити : HabitId * PeriodId ==> ()
+  Створити(h, p) ==
+    (status := status munion {h |-> <Чернетка>};
+     period := period munion {h |-> p})
+  pre h not in set dom status
+  post status = status~ munion {h |-> <Чернетка>} and
+       period = period~ munion {h |-> p} and
+       records = records~ and pausedFrom = pausedFrom~;
+
+  Активувати : HabitId ==> ()
+  Активувати(h) == status := status ++ {h |-> <Очікує>}
+  pre h in set dom status and status(h) = <Чернетка>
+  post status = status~ ++ {h |-> <Очікує>} and period = period~ and
+       records = records~ and pausedFrom = pausedFrom~;
+
+  ПозначитиВиконаною : HabitId * PeriodId * RecordId ==> ()
+  ПозначитиВиконаною(h, p, r) ==
+    (status := status ++ {h |-> <Виконано>};
+     records := records munion {mk_(h,p) |-> r})
+  pre h in set dom status and status(h) = <Очікує> and p = period(h) and
+      mk_(h,p) not in set dom records and r not in set rng records
+  post status = status~ ++ {h |-> <Виконано>} and
+       records = records~ munion {mk_(h,p) |-> r} and
+       period = period~ and pausedFrom = pausedFrom~;
+
+  НовийПеріод : HabitId * PeriodId ==> ()
+  НовийПеріод(h, p) ==
+    (status := status ++ {h |-> <Очікує>};
+     period := period ++ {h |-> p})
+  pre h in set dom status and status(h) = <Виконано> and p <> period(h)
+  post status = status~ ++ {h |-> <Очікує>} and
+       period = period~ ++ {h |-> p} and records = records~ and
+       pausedFrom = pausedFrom~;
+
+  Призупинити : HabitId ==> ()
+  Призупинити(h) ==
+    (pausedFrom := pausedFrom munion {h |-> status(h)};
+     status := status ++ {h |-> <Пауза>})
+  pre h in set dom status and
+      (status(h) = <Очікує> or status(h) = <Виконано>)
+  post status = status~ ++ {h |-> <Пауза>} and
+       pausedFrom(h) = status~(h) and period = period~ and records = records~;
+
+  Відновити : HabitId ==> ()
+  Відновити(h) ==
+    (status := status ++ {h |-> pausedFrom(h)};
+     pausedFrom := {h} <-: pausedFrom)
+  pre h in set dom pausedFrom
+  post status = status~ ++ {h |-> pausedFrom~(h)} and
+       h not in set dom pausedFrom and period = period~ and records = records~;
+
+  Архівувати : HabitId ==> ()
+  Архівувати(h) == status := status ++ {h |-> <Архів>}
+  pre h in set dom status and
+      (status(h) = <Очікує> or status(h) = <Виконано>)
+  post status = status~ ++ {h |-> <Архів>} and period = period~ and
+       records = records~ and pausedFrom = pausedFrom~;
+
+  ВідновитиЗАрхіву : HabitId * PeriodId ==> ()
+  ВідновитиЗАрхіву(h, p) ==
+    (status := status ++ {h |-> <Очікує>};
+     period := period ++ {h |-> p})
+  pre h in set dom status and status(h) = <Архів> and p <> period(h)
+  post status = status~ ++ {h |-> <Очікує>} and
+       period = period~ ++ {h |-> p} and records = records~ and
+       pausedFrom = pausedFrom~;
+end
