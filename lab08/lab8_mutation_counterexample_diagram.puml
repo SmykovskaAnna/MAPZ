@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+title Контрприклад: пауза з недостимого стану
+skinparam shadowing false
+skinparam state { 
+  BackgroundColor #F7FAFF; 
+  BorderColor #426B9A 
+}
+
+state "Чернетка" as Draft #FFF4D6
+state "Призупинена" as Paused #FDE2E2
+
+[*] --> Draft
+Draft -[#C0392B,bold]-> Paused : МутованаПризупинити
+
+note right of Paused
+  Збережено станДоПаузи = Чернетка.
+  Інваріант вимагає, щоб стан до паузи
+  був Очікує або ПеріодВиконано.
+  Контрприклад з Alloy Analyzer 6.2.0.
+end note
+@enduml

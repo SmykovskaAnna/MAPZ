@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+title Контрприклад: звичка нескінченно очікує
+skinparam shadowing false
+skinparam state { 
+  BackgroundColor #F7FAFF; 
+  BorderColor #426B9A 
+}
+
+state "Чернетка" as Draft
+state "Очікує\nпоточний період має запис" as Waiting #FFF4D6
+state "Період виконано" as Done
+
+[*] --> Draft
+Draft --> Waiting : Активувати
+Waiting --> Waiting : ПорожнійКрок
+Waiting --> Done : ПозначитиВиконаною
+
+note right of Waiting
+  У контрприкладі перехід
+  ПозначитиВиконаною не обирається.
+  ПорожнійКрок повторюється без кінця.
+  Тому властивість «Очікує ⇒ колись
+  виконано» порушується.
+end note
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+title Контрприклад: звичка без запису виконання
+skinparam shadowing false
+skinparam object {
+  BackgroundColor #F7FAFF
+  BorderColor #426B9A
+}
+
+object "Зареєстрований\nкористувач 0" as User0
+object "Звичка 0\nстан = Архівована" as Habit0 #FFF4D6
+object "Категорія 0" as Category0
+object "Період 0" as Period0
+
+User0 --> Habit0 : звичкиКористувача
+Habit0 --> Category0 : категорія
+Habit0 --> Period0 : поточнийПеріод
+
+note right of Habit0
+  записи = ∅
+  Це дозволено: у ЛР2
+  композиція допускає 0..*
+  записів на звичку.
+end note
+
+legend bottom
+  Контрприклад з Alloy Analyzer 6.2.0:
+  звичка є, але ЗаписВиконання немає.
+  Помилкове твердження — його слід прибрати,
+  а модель залишити без вимоги про обов'язковий запис.
+endlegend
+@enduml
